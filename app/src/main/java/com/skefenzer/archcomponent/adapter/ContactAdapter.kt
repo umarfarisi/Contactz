@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import com.skefenzer.archcomponent.R
 import com.skefenzer.archcomponent.model.Contact
 
-class ContactAdapter(private val ctx: Context) : RecyclerView.Adapter<ContactVH>() {
+class ContactAdapter(private val ctx: Context, private val listener: ((position: Int) -> Unit)? = null)
+    : RecyclerView.Adapter<ContactVH>() {
 
     var contacts = listOf<Contact>()
         set(value) {
@@ -16,7 +17,7 @@ class ContactAdapter(private val ctx: Context) : RecyclerView.Adapter<ContactVH>
         }
 
     override fun onBindViewHolder(holder: ContactVH?, position: Int) {
-        holder?.setData(contacts[position])
+        holder?.setUp(contacts[position], position, listener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =

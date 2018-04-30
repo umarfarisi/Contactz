@@ -10,7 +10,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val adapter = lazy { ContactAdapter(this) }
+    private val viewModel = lazy { ViewModelProviders.of(this).get(MainViewModel::class.java) }
+    private val observer = lazy { MainObserver(this, viewModel.value) }
+    private val adapter = lazy { ContactAdapter(this, observer.value::onContactRemove) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,16 +20,15 @@ class MainActivity : AppCompatActivity() {
 
         rvContacts.layoutManager = LinearLayoutManager(this)
         rvContacts.adapter = adapter.value
+        rvContacts.animation = null
 
-        val viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        viewModel.contacsLD.observe({ lifecycle }, this::populate)
-        lifecycle.addObserver(MainObserver(this, viewModel))
+        lifecycle.addObserver(observer.value)
 
     }
 
-    private fun populate(contacts: List<Contact>?) {
+    private fun populate(contacts: MutableList<Contact>?) {
         contacts?.let {
-            adapter.value.contacts = it.toMutableList()
+            adapter.value.contacts = it
         }
     }
 

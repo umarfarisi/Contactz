@@ -6,6 +6,6 @@ import com.skefenzer.archcomponent.model.Contact
 
 class MainViewModel : ViewModel() {
 
-    var contacsLD = MutableLiveData<List<Contact>>()
+    var contacsLD = MutableLiveData<MutableList<Contact>>()
 
 }

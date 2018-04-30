@@ -7,9 +7,12 @@ import kotlinx.android.synthetic.main.item_contact.view.*
 
 class ContactVH(itemView: View?) : RecyclerView.ViewHolder(itemView) {
 
-    fun setData(contact: Contact) {
+    fun setUp(contact: Contact, position: Int, listener: ((position: Int) -> Unit)?) {
         itemView?.tvName?.text = contact.name
         itemView?.tvPhone?.text = contact.phone
+        itemView?.btnRemove?.setOnClickListener {
+            listener?.invoke(position)
+        }
     }
 
 }
